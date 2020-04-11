@@ -19,5 +19,5 @@ When the base will be ready I will release the code. Stay tuned.
 
 # Credits
 
-* [Foxye](https://github.com/EquiFox) for his public hack that game me inspiration to continue.
+* [Foxye](https://github.com/EquiFox) for his public hack that gave me inspiration to continue.
 * Allan (I will ask him if he wants to be tagged here) for great w2s code and cool c++ snippets.
