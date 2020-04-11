@@ -1,7 +1,7 @@
 
 # il2cpp
 
-I have found time to learn megapatch2 for SCPSL game.
+I have found time to learn megapatch2 changes in SCPSL game.
 
 Old repo is read-only from now.
 
