@@ -3,7 +3,10 @@
 #include "utils.h"
 
 void render() {
-	gui::text("il2cpp plague : v0.1", 15, 15, 255, 0, 0);
+	gui::text("il2cpp plague : v0.2", 15, 15, 255, 0, 0);
+
+	// something is changed during runtime, simple fix - update data each frame
+	il2cpp::Init();
 
 	auto camera = il2cpp::get_current_camera();
 	if (!camera) return;
@@ -30,7 +33,25 @@ void render() {
 
 			float dist = GetDistance(cameraPosition, position);
 
-			sprintf(buf, "%f.2", dist);
+			sprintf(buf, "%.2f", dist);
+			gui::text(buf, out.X, out.Y, 255, 255, 255);
+		}
+	}
+
+	// find 914
+	auto location = il2cpp::find_entities("914_use");
+	objects_num = Read<int>((uint64_t)location + offset::unity_list_len);
+	if (objects_num) {
+		auto object = Read<uint64_t>((uint64_t)location + offset::unity_list_start);
+
+		vec3 position = il2cpp::get_transform(object, TRANSFORM_IMMOVABLE);
+		vec2 out;
+
+		if (WorldToScreen(matrix, position, out, gui::Width * 0.5, gui::Height * 0.5)) {
+
+			float dist = GetDistance(cameraPosition, position);
+
+			sprintf(buf, "SCP-914: %.2f", dist);
 			gui::text(buf, out.X, out.Y, 255, 255, 255);
 		}
 	}

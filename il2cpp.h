@@ -5,6 +5,9 @@
 #include "math.h"
 #include "utils.h"
 
+constexpr const int TRANSFORM_MOVABLE = 0;
+constexpr const int TRANSFORM_IMMOVABLE = 1;
+
 struct Il2CppString;
 
 typedef void*         il2cpp_resolve_icall(const char*);
@@ -34,7 +37,7 @@ namespace il2cpp
 	uint64_t get_current_camera();
 	uint64_t* find_entities(const char* tag);
 	vec3 get_camera_position(uint64_t camera);
-	vec3 get_transform(uint64_t entity);
+	vec3 get_transform(uint64_t entity, int transform_type = TRANSFORM_MOVABLE);
 	Matrix get_viewmatrix();
 	Matrix get_viewmatrix(uint64_t);
 }

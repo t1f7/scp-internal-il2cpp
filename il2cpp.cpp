@@ -51,11 +51,14 @@ namespace il2cpp
 		return ((t_unity_find_objects*)unity_find_objects)(il2cpp_string);
 	}
 
-	vec3 get_transform(uint64_t entity) {
+	vec3 get_transform(uint64_t entity, int transform_type) {
 		auto transform = ((t_unity_get_transform*)unity_get_transform)(entity);
 		if (!transform) return vec3{};
 		auto posdata = Read<uint64_t>((uint64_t)transform + offset::transform_component);
 		if (!posdata) return vec3{};
+		if (transform_type == TRANSFORM_IMMOVABLE) {
+			return Read<vec3>(posdata + offset::transform_data_vector_structure);
+		}
 		posdata = Read<uint64_t>((uint64_t)posdata + offset::transform_component_data);
 		return Read<vec3>(posdata + offset::transform_data_vector);
 	}
