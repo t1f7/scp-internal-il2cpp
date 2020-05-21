@@ -22,7 +22,7 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="gui.cpp">
-      <Filter>source</Filter>
+      <Filter>gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -39,6 +39,9 @@
       <Filter>h</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">
+      <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="memory.h">
       <Filter>h</Filter>
     </ClInclude>
   </ItemGroup>

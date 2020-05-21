@@ -34,8 +34,9 @@ namespace il2cpp
 
 	void Init() {
 
+		/// This is not needed if you hooked game thread
 		// fix GC crash
-		if (!GC_patched) {
+		/*if (!GC_patched) {
 
 			auto base = GetModuleBase();
 			DWORD dwOld;
@@ -45,7 +46,7 @@ namespace il2cpp
 			VirtualProtect((void*)(base + offset::GC_crash), 1, dwOld, NULL);
 
 			GC_patched = true;
-		}
+		}*/
 
 		// il2cpp things
 		unity_string_new = FindFunction<il2cpp_string_new>(offset::il2cpp_string_new);
