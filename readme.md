@@ -6,9 +6,13 @@ Old repo is read-only from now.
 
 # Preview
 
-[![v0.1](https://img.youtube.com/vi/oMzq-GHRS0w/0.jpg)](https://www.youtube.com/watch?v=oMzq-GHRS0w)
+[![v0.4](https://img.youtube.com/vi/Sm50fRX-E2I/0.jpg)](https://www.youtube.com/watch?v=Sm50fRX-E2I)
 
 This project is a base for il2cpp game hack. You can make a couple changes to make it work with any other game, not SCPSL only.
+
+# Updates
+
+v0.4: hooking game thread to bypass GC detection.
 
 # Code quality
 
