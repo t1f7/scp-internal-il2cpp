@@ -6,6 +6,8 @@ namespace offset {
 	// il2cpp
 	constexpr ::std::uint64_t il2cpp_string_new = 0x1D6C60;
 	constexpr ::std::uint64_t il2cpp_resolve_icall = 0x1DA710;
+	constexpr ::std::uint64_t GC_crash = 0x1F2085;
+	constexpr ::std::uint64_t GC_patch = 0xEB;
 
 	// camera
 	constexpr ::std::uint64_t camera = 0x10;

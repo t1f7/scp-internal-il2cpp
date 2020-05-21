@@ -6,6 +6,10 @@ namespace il2cpp
 	uint64_t moduleBase;
 	uint64_t assemblyBase;
 
+	// Patch GC that wants to crash the entire game if suspicious thread found
+	// Better option would be to hook up game thread, what ever, this is the fastest option right now, isn't it?
+	bool GC_patched;
+
 	// api
 	void* unity_string_new;
 	void* unity_resolve_icall;
@@ -29,6 +33,19 @@ namespace il2cpp
 	}
 
 	void Init() {
+
+		// fix GC crash
+		if (!GC_patched) {
+
+			auto base = GetModuleBase();
+			DWORD dwOld;
+
+			VirtualProtect((void*)(base + offset::GC_crash), 1, PAGE_EXECUTE_READWRITE, &dwOld);
+			*(byte*)(base + offset::GC_crash) = offset::GC_patch;
+			VirtualProtect((void*)(base + offset::GC_crash), 1, dwOld, NULL);
+
+			GC_patched = true;
+		}
 
 		// il2cpp things
 		unity_string_new = FindFunction<il2cpp_string_new>(offset::il2cpp_string_new);
