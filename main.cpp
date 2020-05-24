@@ -131,6 +131,8 @@ void PlayerStats_Update(PEXCEPTION_POINTERS ExceptionInfo) {
 			found = true;
 			// override position for cached entity
 			entityList[i].position = position;
+			entityList[i].ccm = ccm;
+			entityList[i].team = team;
 		}
 		tmp.push_back(entityList[i]);
 	}
