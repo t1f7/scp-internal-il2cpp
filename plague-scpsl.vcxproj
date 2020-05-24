@@ -136,7 +136,9 @@
     <ClInclude Include="il2cpp.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="offsets.h" />
+    <ClInclude Include="pointer.h" />
     <ClInclude Include="utils.h" />
+    <ClInclude Include="veh.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

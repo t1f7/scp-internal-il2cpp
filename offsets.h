@@ -1,31 +1,35 @@
 #pragma once
-#include <cstdint>
+#include "pointer.h"
 
 namespace offset {
 
 	// il2cpp
-	constexpr ::std::uint64_t il2cpp_string_new = 0x1D6C60;
-	constexpr ::std::uint64_t il2cpp_resolve_icall = 0x1DA710;
-	constexpr ::std::uint64_t GC_crash = 0x1F2085;
-	constexpr ::std::uint64_t GC_patch = 0xEB;
+	constexpr pointer il2cpp_string_new = 0x1D6C60;
+	constexpr pointer il2cpp_resolve_icall = 0x1DA710;
+	constexpr pointer GC_crash = 0x1F2085;
+	constexpr pointer GC_patch = 0xEB;
 
 	// camera
-	constexpr ::std::uint64_t camera = 0x10;
-	constexpr ::std::uint64_t matrix = 0xDC;
-	constexpr ::std::uint64_t camera_position = 0x42C;
+	constexpr pointer camera = 0x10;
+	constexpr pointer matrix = 0xDC;
+	constexpr pointer camera_position = 0x42C;
 
 	// unit3d
-	constexpr ::std::uint64_t unity_list_len = 0x18;
-	constexpr ::std::uint64_t unity_list_start = 0x20;
-	constexpr ::std::uint64_t unity_list_offset = 0x8;
+	constexpr pointer unity_list_len = 0x18;
+	constexpr pointer unity_list_start = 0x20;
+	constexpr pointer unity_list_offset = 0x8;
 
 	// transform [Player]
-	constexpr ::std::uint64_t transform_component = 0x10;
-	constexpr ::std::uint64_t transform_component_data = 0x38;
-	constexpr ::std::uint64_t transform_data_vector = 0x90;
+	constexpr pointer transform_component = 0x10;
+	constexpr pointer transform_component_data = 0x38;
+	constexpr pointer transform_data_vector = 0x90;
 
 	// transform [Structure]
-	constexpr ::std::uint64_t transform_data_vector_structure = 0x1D0;
+	constexpr pointer transform_data_vector_structure = 0x1D0;
 
-	// (*(uint64_t*)(il2cpp::GetModuleBase() + 0x01D3DF48) + 0x50); // Console::LateUpdate
+	// PlayerStats
+	constexpr pointer PlayerStats_Update = 0x26DE10;
+	constexpr pointer PlayerStats_ccm = 0x70;
+	constexpr pointer ccm_team = 0x188;
+	constexpr pointer ccm_move_sync = 0x188;
 }

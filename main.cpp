@@ -2,13 +2,17 @@
 #include "gui.h"
 #include "utils.h"
 #include "memory.h"
+#include "veh.h"
 
 
 void render() {
 
-	gui::text("il2cpp plague : v0.4", 15, 15, 255, 0, 0);
+	gui::text("il2cpp plague : v0.5", 15, 15, 255, 0, 0);
 
-	if (!camera) return;
+	if (!camera) {
+		entityList.clear();
+		return;
+	}
 
 	auto screenCenterX = gui::Width * 0.5;
 	auto screenCenterY = gui::Height * 0.5;
@@ -25,7 +29,7 @@ void render() {
 
 			float dist = GetDistance(cameraPosition, entityList[i].position);
 
-			sprintf(buf, "%.2f", dist);
+			sprintf(buf, "%s - %.2f", TeamName[entityList[i].team], dist);
 			gui::text(buf, out.X, out.Y, 255, 255, 255);
 		}
 	}
@@ -61,7 +65,7 @@ DWORD WINAPI OnDllAttach(LPVOID inj_hModule)
 	return 1;
 }
 
-uint64_t original;
+pointer original;
 
 void corrupt_the_game() {
 
@@ -73,35 +77,13 @@ void corrupt_the_game() {
 	matrix = il2cpp::get_viewmatrix(camera);
 	cameraPosition = il2cpp::get_camera_position(camera);
 
-	// find players
-	auto playerdata = il2cpp::find_entities("Player");
-	int objects_num = Read<int>((uint64_t)playerdata + offset::unity_list_len);
-
-	std::vector<Entity> tmp;
-
-	// collect player data in game thread
-	for (int i = 0; i < objects_num; i++) {
-
-		auto player = Read<uint64_t>((uint64_t)playerdata + offset::unity_list_start + i * offset::unity_list_offset);
-
-		vec3 position = il2cpp::get_transform(player);
-
-		tmp.push_back({
-			player,
-			position
-		});
-
-	}
-
-	entityList = tmp;
-	tmp.clear();
-
 	// collect location data
 	// find scp-914
+	std::vector<Entity> tmp;
 	auto location = il2cpp::find_entities("914_use");
-	objects_num = Read<int>((uint64_t)location + offset::unity_list_len);
+	int objects_num = Read<int>((pointer)location + offset::unity_list_len);
 	if (objects_num) {
-		auto object = Read<uint64_t>((uint64_t)location + offset::unity_list_start);
+		auto object = Read<pointer>((pointer)location + offset::unity_list_start);
 
 		vec3 position = il2cpp::get_transform(object, TRANSFORM_IMMOVABLE);
 		tmp.push_back({
@@ -119,10 +101,52 @@ static __int64 __fastcall Console_Update(void* a1) {
 	static auto fn = reinterpret_cast<__int64(__fastcall*)(void*)>(original);
 	auto result = fn(a1);
 
-	// do our dirty things here
+	// dirty things happen here
 	corrupt_the_game();
 
 	return result;
+}
+
+void PlayerStats_Update(PEXCEPTION_POINTERS ExceptionInfo) {
+
+	// components are at Rcx
+	auto PlayerStats_Component = ExceptionInfo->ContextRecord->Rcx;
+	pointer ccm = Read<pointer>(PlayerStats_Component + offset::PlayerStats_ccm);
+	auto team = Read<int>(ccm + offset::ccm_team);
+
+	// this is how to combine player gameobject with component data
+	// it's ok to call il2cpp api here as we're inside game thread inside any VEH hook
+	auto player = il2cpp::get_gameobject(PlayerStats_Component);
+
+	// why don't we collect other data here
+	vec3 position = il2cpp::get_transform(player);
+
+	// different thread forces us to recreate a list
+	// it looks as a bad design but it works so I don't care actually if it's bad
+	std::vector<Entity> tmp;
+	bool found = false;
+
+	for (int i = 0; i < entityList.size(); i++) {
+		if (entityList[i].address == player) {
+			found = true;
+			// override position for cached entity
+			entityList[i].position = position;
+		}
+		tmp.push_back(entityList[i]);
+	}
+	entityList = tmp;
+	tmp.clear();
+
+	if (!found) {
+		entityList.push_back(Entity{
+			player,
+			position,
+			"unnamed", // add nickname here after
+			ccm,
+			team
+		});
+	}
+
 }
 
 
@@ -136,10 +160,16 @@ BOOL WINAPI DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved) {
 			CreateThread(nullptr, 0, OnDllAttach, hinstDll, 0, nullptr);
 		}
 
+		auto base = il2cpp::GetModuleBase();
+
+		// hooking with VEH example
+		AddVectoredExceptionHandler(1, CorruptionHandler);
+		VEH.Append(base + offset::PlayerStats_Update, &PlayerStats_Update);
+
 		// spoof function so the game calls hack :)
-		auto target = (*(uint64_t*)(il2cpp::GetModuleBase() + 0x01D3DF48) + 0x50);
-		original = *(uint64_t*)(target);
-		*(uint64_t*)(target) = (DWORD64)(Console_Update);
+		auto target = (*(pointer*)(base + 0x01D3DF48) + 0x50); // Console::LateUpdate
+		original = *(pointer*)(target);
+		*(pointer*)(target) = (pointer)(Console_Update);
 	}
 	return true;
 }

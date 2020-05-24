@@ -14,8 +14,9 @@ typedef void*         il2cpp_resolve_icall(const char*);
 typedef Il2CppString* il2cpp_string_new(const char*);
 
 typedef void*     t_unity_get_main_camera();
-typedef uint64_t* t_unity_find_objects(Il2CppString*);
-typedef uint64_t* t_unity_get_transform(uint64_t gameObject);
+typedef pointer* t_unity_find_objects(Il2CppString*);
+typedef pointer* t_unity_get_transform(pointer gameObject);
+typedef pointer t_unity_get_gameobject(pointer component);
 
 namespace il2cpp
 {
@@ -26,18 +27,20 @@ namespace il2cpp
 	constexpr const char* fname_find_gameobjects = "UnityEngine.GameObject::FindGameObjectsWithTag(System.String)";
 	constexpr const char* fname_get_transform = "UnityEngine.GameObject::get_transform(System.IntPtr)";
 	constexpr const char* fname_get_current_camera = "UnityEngine.Camera::get_main()";
+	constexpr const char* fname_get_gameobject = "UnityEngine.Component::get_gameObject()";
 	
 
 	// functions
-	DWORD64 GetModuleBase();
-	template<class T> T* FindFunction(DWORD64 offset);
+	pointer GetModuleBase();
+	template<class T> T* FindFunction(pointer offset);
 	void Init();
 
 	// usefull functions
-	uint64_t get_current_camera();
-	uint64_t* find_entities(const char* tag);
-	vec3 get_camera_position(uint64_t camera);
-	vec3 get_transform(uint64_t entity, int transform_type = TRANSFORM_MOVABLE);
+	pointer get_current_camera();
+	pointer* find_entities(const char* tag);
+	pointer get_gameobject(pointer component);
+	vec3 get_camera_position(pointer camera);
+	vec3 get_transform(pointer entity, int transform_type = TRANSFORM_MOVABLE);
 	Matrix get_viewmatrix();
-	Matrix get_viewmatrix(uint64_t);
+	Matrix get_viewmatrix(pointer);
 }

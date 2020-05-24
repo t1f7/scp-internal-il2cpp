@@ -3,8 +3,8 @@
 namespace il2cpp
 {
 	// variables
-	uint64_t moduleBase;
-	uint64_t assemblyBase;
+	pointer moduleBase;
+	pointer assemblyBase;
 
 	// Patch GC that wants to crash the entire game if suspicious thread found
 	// Better option would be to hook up game thread, what ever, this is the fastest option right now, isn't it?
@@ -16,18 +16,19 @@ namespace il2cpp
 	void* unity_find_objects;
 	void* unity_get_transform;
 	void* unity_get_main_camera;
+	void* unity_get_gameobject;
 
-	DWORD64 GetModuleBase()
+	pointer GetModuleBase()
 	{
 		if (assemblyBase == 0)
 		{
-			assemblyBase = (DWORD64)GetModuleHandleA(assemblyName);
+			assemblyBase = (pointer)GetModuleHandleA(assemblyName);
 		}
 		return assemblyBase;
 	}
 
 	template<class T>
-	T* FindFunction(DWORD64 offset)
+	T* FindFunction(pointer offset)
 	{
 		return (T*)(GetModuleBase() + offset);
 	}
@@ -56,34 +57,40 @@ namespace il2cpp
 		unity_find_objects = ((il2cpp_resolve_icall*)unity_resolve_icall)(fname_find_gameobjects);
 		unity_get_transform = ((il2cpp_resolve_icall*)unity_resolve_icall)(fname_get_transform);
 		unity_get_main_camera = ((il2cpp_resolve_icall*)unity_resolve_icall)(fname_get_current_camera);
+		unity_get_gameobject = ((il2cpp_resolve_icall*)unity_resolve_icall)(fname_get_gameobject);
 
 	}
 
-	uint64_t get_current_camera() {
+	pointer get_current_camera() {
 		auto ptr = ((t_unity_get_main_camera*)unity_get_main_camera)();
-		return (uint64_t)ptr;
+		return (pointer)ptr;
 	}
 
-	uint64_t* find_entities(const char* tag) {
+	pointer* find_entities(const char* tag) {
 		auto il2cpp_string = ((il2cpp_string_new*)unity_string_new)(tag);
 		return ((t_unity_find_objects*)unity_find_objects)(il2cpp_string);
 	}
 
-	vec3 get_transform(uint64_t entity, int transform_type) {
+	vec3 get_transform(pointer entity, int transform_type) {
 		auto transform = ((t_unity_get_transform*)unity_get_transform)(entity);
 		if (!transform) return vec3{};
-		auto posdata = Read<uint64_t>((uint64_t)transform + offset::transform_component);
+		auto posdata = Read<pointer>((pointer)transform + offset::transform_component);
 		if (!posdata) return vec3{};
 		if (transform_type == TRANSFORM_IMMOVABLE) {
 			return Read<vec3>(posdata + offset::transform_data_vector_structure);
 		}
-		posdata = Read<uint64_t>((uint64_t)posdata + offset::transform_component_data);
+		posdata = Read<pointer>((pointer)posdata + offset::transform_component_data);
 		return Read<vec3>(posdata + offset::transform_data_vector);
 	}
 
-	vec3 get_camera_position(uint64_t camera) {
+	pointer get_gameobject(pointer component) {
+		auto go = ((t_unity_get_gameobject*)unity_get_gameobject)(component);
+		return go; 
+	}
+
+	vec3 get_camera_position(pointer camera) {
 		if (camera != NULL) {
-			camera = Read<uint64_t>((uint64_t)camera + offset::camera);
+			camera = Read<pointer>((pointer)camera + offset::camera);
 			return Read<vec3>(camera + offset::camera_position);
 		}
 		return vec3{};
@@ -93,9 +100,9 @@ namespace il2cpp
 		auto camera = get_current_camera();
 		return get_viewmatrix(camera);
 	}
-	Matrix get_viewmatrix(uint64_t camera) {
+	Matrix get_viewmatrix(pointer camera) {
 		if (camera != NULL) {
-			camera = Read<uint64_t>((uint64_t)camera + offset::camera);
+			camera = Read<pointer>((pointer)camera + offset::camera);
 			return Read<Matrix>(camera + offset::matrix);
 		}
 		return Matrix{};

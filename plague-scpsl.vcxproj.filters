@@ -44,5 +44,11 @@
     <ClInclude Include="memory.h">
       <Filter>h</Filter>
     </ClInclude>
+    <ClInclude Include="pointer.h">
+      <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="veh.h">
+      <Filter>h</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
