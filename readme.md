@@ -14,6 +14,8 @@ This project is a base for il2cpp game hack. You can make a couple changes to ma
 
 v0.4: hooking game thread to bypass GC detection.
 
+v0.5: fetching component data example.
+
 # Code quality
 
 I did all I could, personally for me the code looks pretty simple and nice.
