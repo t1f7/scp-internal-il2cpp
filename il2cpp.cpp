@@ -17,6 +17,9 @@ namespace il2cpp
 	void* unity_get_transform;
 	void* unity_get_main_camera;
 	void* unity_get_gameobject;
+	void* unity_create_text;
+	void* unity_draw_text;
+	void* unity_none_style;
 
 	pointer GetModuleBase()
 	{
@@ -59,6 +62,18 @@ namespace il2cpp
 		unity_get_main_camera = ((il2cpp_resolve_icall*)unity_resolve_icall)(fname_get_current_camera);
 		unity_get_gameobject = ((il2cpp_resolve_icall*)unity_resolve_icall)(fname_get_gameobject);
 
+		// unity3D rendering
+		unity_create_text = FindFunction<t_unity_create_gui_text>(0x103BE10);
+		unity_draw_text = FindFunction<t_unity_label>(0x1050380);
+		unity_none_style = FindFunction<t_unity_no_style>(0x1049CF0);
+
+	}
+
+	void draw_text(Rect position, const char* text) {
+		auto il2cpp_string = ((il2cpp_string_new*)unity_string_new)(text);
+		auto content = ((t_unity_create_gui_text*)unity_create_text)(il2cpp_string);
+		auto style = ((t_unity_no_style*)unity_none_style)();
+		((t_unity_label*)unity_draw_text)(position, content, style);
 	}
 
 	pointer get_current_camera() {

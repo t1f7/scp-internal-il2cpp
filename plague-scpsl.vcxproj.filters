@@ -7,9 +7,6 @@
     <Filter Include="h">
       <UniqueIdentifier>{41bfae6c-83b9-49d7-8ace-1243a58ecf90}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gui">
-      <UniqueIdentifier>{04c5e985-0751-4679-a760-4513026169ff}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,9 +18,6 @@
     <ClCompile Include="utils.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="gui.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="il2cpp.h">
@@ -31,9 +25,6 @@
     </ClInclude>
     <ClInclude Include="offsets.h">
       <Filter>h</Filter>
-    </ClInclude>
-    <ClInclude Include="gui.h">
-      <Filter>gui</Filter>
     </ClInclude>
     <ClInclude Include="math.h">
       <Filter>h</Filter>

@@ -125,13 +125,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="gui.cpp" />
     <ClCompile Include="il2cpp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="gui.h" />
     <ClInclude Include="memory.h" />
     <ClInclude Include="il2cpp.h" />
     <ClInclude Include="math.h" />

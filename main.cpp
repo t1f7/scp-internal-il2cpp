@@ -1,25 +1,35 @@
 #include "il2cpp.h"
-#include "gui.h"
 #include "utils.h"
 #include "memory.h"
 #include "veh.h"
 
+const int Width = 1920;
+const int Height = 1080;
 
-void render() {
 
-	gui::text("il2cpp plague : v0.5", 15, 15, 255, 0, 0);
+void OnGUI(PEXCEPTION_POINTERS ExceptionInfo) {
+
+	// something changes in runtime, let's fix it up
+	il2cpp::Init();
+
+	il2cpp::draw_text(Rect{ 5, 30, 100.0f, 100.0f }, "<color=red>il2cpp plague : v0.6</color>");
+
+	camera = il2cpp::get_current_camera();
+	if (!camera) return;
+	matrix = il2cpp::get_viewmatrix(camera);
+	cameraPosition = il2cpp::get_camera_position(camera);
 
 	if (!camera) {
 		entityList.clear();
 		return;
 	}
 
-	auto screenCenterX = gui::Width * 0.5;
-	auto screenCenterY = gui::Height * 0.5;
+	auto screenCenterX = Width * 0.5;
+	auto screenCenterY = Height * 0.5;
 
 	char buf[100];
-	sprintf(buf, "players: %i", entityList.size());
-	gui::text(buf, 15, 30, 255, 0, 0);
+	sprintf(buf, "<color=white>players: %i</color>", entityList.size());
+	il2cpp::draw_text(Rect{ 5, 45, 100.0f, 100.0f }, buf);
 
 	// draw players
 	for (int i = 0; i < entityList.size(); i++) {
@@ -28,56 +38,13 @@ void render() {
 		if (WorldToScreen(matrix, entityList[i].position, out, screenCenterX, screenCenterY)) {
 
 			float dist = GetDistance(cameraPosition, entityList[i].position);
+			auto color = "white";
 
-			sprintf(buf, "%s - %.2f", TeamName[entityList[i].team], dist);
-			gui::text(buf, out.X, out.Y, 255, 255, 255);
+			sprintf(buf, "<color=%s>%s - %.2f</color>", color, TeamName[entityList[i].team], dist);
+			il2cpp::draw_text(Rect{ out.X, out.Y, 100.0f, 100.0f }, buf);
 		}
 	}
 
-	// draw locations
-	for (int i = 0; i < locationList.size(); i++) {
-		vec2 out;
-
-		if (WorldToScreen(matrix, locationList[i].position, out, screenCenterX, screenCenterY)) {
-
-			float dist = GetDistance(cameraPosition, locationList[i].position);
-
-			sprintf(buf, "%s - %.2f", locationList[i].name, dist);
-			gui::text(buf, out.X, out.Y, 255, 255, 0);
-		}
-	}
-}
-
-DWORD WINAPI OnDllAttach(LPVOID inj_hModule)
-{
-	gui::RegisterDLLWindowClass((wchar_t*)L"Plague-SCPSL");
-	auto hWnd = CreateWindowEx(WS_EX_TOPMOST | WS_EX_LAYERED | WS_EX_COMPOSITED | WS_EX_TRANSPARENT, "overlay", "overlay", WS_EX_TOPMOST | WS_POPUP, 100, 100, gui::Width, gui::Height, NULL, NULL, NULL, inj_hModule);
-	SetLayeredWindowAttributes(hWnd, RGB(0, 0, 0), 0, ULW_COLORKEY);
-	SetLayeredWindowAttributes(hWnd, 0, 255, LWA_ALPHA);
-	ShowWindow(hWnd, SW_SHOW);
-	gui::DirectXxInit(hWnd);
-	gui::render_hack = &render;
-
-	for (;;)
-	{
-		gui::RenderLoop("SCPSL");
-	}
-	return 1;
-}
-
-pointer original;
-
-void corrupt_the_game() {
-
-	// something changes in runtime, let's fix it up
-	il2cpp::Init();
-
-	camera = il2cpp::get_current_camera();
-	if (!camera) return;
-	matrix = il2cpp::get_viewmatrix(camera);
-	cameraPosition = il2cpp::get_camera_position(camera);
-
-	// collect location data
 	// find scp-914
 	std::vector<Entity> tmp;
 	auto location = il2cpp::find_entities("914_use");
@@ -94,17 +61,20 @@ void corrupt_the_game() {
 	}
 
 	locationList = tmp;
-	tmp.clear();
-}
 
-static __int64 __fastcall Console_Update(void* a1) {
-	static auto fn = reinterpret_cast<__int64(__fastcall*)(void*)>(original);
-	auto result = fn(a1);
+	// draw locations
+	for (int i = 0; i < locationList.size(); i++) {
+		vec2 out;
 
-	// dirty things happen here
-	corrupt_the_game();
+		if (WorldToScreen(matrix, locationList[i].position, out, screenCenterX, screenCenterY)) {
 
-	return result;
+			float dist = GetDistance(cameraPosition, locationList[i].position);
+			auto color = "yellow";
+
+			sprintf(buf, "<color=%s>%s - %.2f</color>", color, locationList[i].name, dist);
+			il2cpp::draw_text(Rect{ out.X, out.Y, 100.0f, 100.0f }, buf);
+		}
+	}
 }
 
 void PlayerStats_Update(PEXCEPTION_POINTERS ExceptionInfo) {
@@ -151,27 +121,35 @@ void PlayerStats_Update(PEXCEPTION_POINTERS ExceptionInfo) {
 
 }
 
+/* NOT ACTUAL TILL GAME UPDATE
+pointer original;
+
+static __int64 __fastcall Console_Update(void* a1) {
+	static auto fn = reinterpret_cast<__int64(__fastcall*)(void*)>(original);
+	auto result = fn(a1);
+
+	// dirty things happen here
+	corrupt_the_game();
+
+	return result;
+}*/
 
 BOOL WINAPI DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved) {
 	if (fdwReason == DLL_PROCESS_ATTACH) {
-
-		if (hinstDll) {
-			DisableThreadLibraryCalls(hinstDll);
-
-			// this thread is only for rendering. to get rid of this thread find your way to render gui
-			CreateThread(nullptr, 0, OnDllAttach, hinstDll, 0, nullptr);
-		}
 
 		auto base = il2cpp::GetModuleBase();
 
 		// hooking with VEH example
 		AddVectoredExceptionHandler(1, CorruptionHandler);
 		VEH.Append(base + offset::PlayerStats_Update, &PlayerStats_Update);
+		VEH.Append(base + 0x49C5B0, &OnGUI); // PostProcessingBehaviour
 
+		/* NOT NEEDED FOR NOW... (must have with Scopopho)
 		// spoof function so the game calls hack :)
 		auto target = (*(pointer*)(base + 0x01D3DF48) + 0x50); // Console::LateUpdate
 		original = *(pointer*)(target);
 		*(pointer*)(target) = (pointer)(Console_Update);
+		*/
 	}
 	return true;
 }

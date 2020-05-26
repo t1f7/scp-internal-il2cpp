@@ -5,10 +5,16 @@
 #include "math.h"
 #include "utils.h"
 
+struct Rect {
+	float x, y, width, heigh;
+};
+
 constexpr const int TRANSFORM_MOVABLE = 0;
 constexpr const int TRANSFORM_IMMOVABLE = 1;
 
 struct Il2CppString;
+struct GUIContent;
+struct GUIStyle;
 
 typedef void*         il2cpp_resolve_icall(const char*);
 typedef Il2CppString* il2cpp_string_new(const char*);
@@ -17,6 +23,11 @@ typedef void*     t_unity_get_main_camera();
 typedef pointer* t_unity_find_objects(Il2CppString*);
 typedef pointer* t_unity_get_transform(pointer gameObject);
 typedef pointer t_unity_get_gameobject(pointer component);
+
+typedef GUIContent* t_unity_create_gui_text(Il2CppString*);
+typedef void t_unity_draw_text(Rect position, const char*);
+typedef void t_unity_label(Rect position, GUIContent* content, GUIStyle* style);
+typedef GUIStyle* t_unity_no_style();
 
 namespace il2cpp
 {
@@ -43,4 +54,7 @@ namespace il2cpp
 	vec3 get_transform(pointer entity, int transform_type = TRANSFORM_MOVABLE);
 	Matrix get_viewmatrix();
 	Matrix get_viewmatrix(pointer);
+
+	// rendering
+	void draw_text(Rect position, const char* text);
 }
