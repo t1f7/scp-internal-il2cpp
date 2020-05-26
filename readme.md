@@ -6,7 +6,7 @@ Old repo is read-only from now.
 
 # Preview
 
-[![v0.4](https://img.youtube.com/vi/Sm50fRX-E2I/0.jpg)](https://www.youtube.com/watch?v=Sm50fRX-E2I)
+[![v0.4](https://img.youtube.com/vi/f-emyZ0ZKdo/0.jpg)](https://www.youtube.com/watch?v=f-emyZ0ZKdo)
 
 This project is a base for il2cpp game hack. You can make a couple changes to make it work with any other game, not SCPSL only.
 
