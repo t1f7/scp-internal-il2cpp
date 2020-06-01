@@ -29,3 +29,8 @@ I did all I could, personally for me the code looks pretty simple and nice.
 
 * [Foxye](https://github.com/EquiFox) for his public hack that gave me inspiration to continue.
 * Allan for great w2s code and cool c++ snippets.
+
+# extra
+
+да, я сижу в группе VAC BAN.
+
