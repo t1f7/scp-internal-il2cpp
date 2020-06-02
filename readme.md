@@ -1,3 +1,5 @@
+The code looks pretty simple and nice.
+
 # il2cpp
 
 I have found time to learn megapatch2 changes in SCPSL game.
@@ -17,13 +19,6 @@ v0.4: hooking game thread to bypass GC detection.
 v0.5: fetching component data example.
 
 v0.6: engine rendering, removed old GUI
-
-# Code quality
-
-I did all I could, personally for me the code looks pretty simple and nice.
-
-~~GUI is a slightly remade code from [ExplosivePimple, 2013](https://www.unknowncheats.me/forum/arma-2-a/92280-source-external-directx-overlay.html) (Hooking DX in Unity3D games is pain).~~
-^ replaced with engine rendering
 
 # Credits
 
