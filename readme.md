@@ -24,8 +24,3 @@ v0.6: engine rendering, removed old GUI
 
 * [Foxye](https://github.com/EquiFox) for his public hack that gave me inspiration to continue.
 * Allan for great w2s code and cool c++ snippets.
-
-# extra
-
-В последнее время участились вопросы, мол, я украл исходный код чита (сам у себя).
-Вас не смущает, что у меня на UC ник `suspended`, а тут `chrysls` ? Почему у меня не может быть другого ника в дискорде? Да, я сижу в группе VAC BAN и осуществляю поддержку софта там. Ссылок не будет.
