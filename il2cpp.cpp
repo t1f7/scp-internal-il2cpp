@@ -6,10 +6,6 @@ namespace il2cpp
 	pointer moduleBase;
 	pointer assemblyBase;
 
-	// Patch GC that wants to crash the entire game if suspicious thread found
-	// Better option would be to hook up game thread, what ever, this is the fastest option right now, isn't it?
-	bool GC_patched;
-
 	// api
 	void* unity_string_new;
 	void* unity_resolve_icall;
@@ -38,20 +34,6 @@ namespace il2cpp
 
 	void Init() {
 
-		/// This is not needed if you hooked game thread
-		// fix GC crash
-		/*if (!GC_patched) {
-
-			auto base = GetModuleBase();
-			DWORD dwOld;
-
-			VirtualProtect((void*)(base + offset::GC_crash), 1, PAGE_EXECUTE_READWRITE, &dwOld);
-			*(byte*)(base + offset::GC_crash) = offset::GC_patch;
-			VirtualProtect((void*)(base + offset::GC_crash), 1, dwOld, NULL);
-
-			GC_patched = true;
-		}*/
-
 		// il2cpp things
 		unity_string_new = FindFunction<il2cpp_string_new>(offset::il2cpp_string_new);
 		unity_resolve_icall = FindFunction<il2cpp_resolve_icall>(offset::il2cpp_resolve_icall);
@@ -63,9 +45,9 @@ namespace il2cpp
 		unity_get_gameobject = ((il2cpp_resolve_icall*)unity_resolve_icall)(fname_get_gameobject);
 
 		// unity3D rendering
-		unity_create_text = FindFunction<t_unity_create_gui_text>(0x103BE10);
-		unity_draw_text = FindFunction<t_unity_label>(0x1050380);
-		unity_none_style = FindFunction<t_unity_no_style>(0x1049CF0);
+		unity_create_text = FindFunction<t_unity_create_gui_text>(0x114FBC0);
+		unity_draw_text = FindFunction<t_unity_label>(0x1164510);
+		unity_none_style = FindFunction<t_unity_no_style>(0x115DD80);
 
 	}
 

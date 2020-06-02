@@ -12,7 +12,7 @@ void OnGUI(PEXCEPTION_POINTERS ExceptionInfo) {
 	// something changes in runtime, let's fix it up
 	il2cpp::Init();
 
-	il2cpp::draw_text(Rect{ 5, 30, 100.0f, 100.0f }, "<color=red>il2cpp plague : v0.6</color>");
+	il2cpp::draw_text(Rect{ 5, 30, 100.0f, 100.0f }, "<color=red>il2cpp plague : v0.7</color>");
 
 	camera = il2cpp::get_current_camera();
 	if (!camera) return;
@@ -121,35 +121,28 @@ void PlayerStats_Update(PEXCEPTION_POINTERS ExceptionInfo) {
 
 }
 
-/* NOT ACTUAL TILL GAME UPDATE
-pointer original;
-
-static __int64 __fastcall Console_Update(void* a1) {
-	static auto fn = reinterpret_cast<__int64(__fastcall*)(void*)>(original);
-	auto result = fn(a1);
-
-	// dirty things happen here
-	corrupt_the_game();
-
-	return result;
-}*/
-
 BOOL WINAPI DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved) {
 	if (fdwReason == DLL_PROCESS_ATTACH) {
 
 		auto base = il2cpp::GetModuleBase();
 
+		/* AC bypass */
+		DWORD dwOld;
+		auto scpbase = (pointer)GetModuleHandleA("SCPSL.exe");
+		VirtualProtect((void*)(scpbase + offset::MemoryIntegrity), 1, PAGE_EXECUTE_READWRITE, &dwOld);
+		byte allow_disintegrity[] = {
+			0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90
+		};
+		memcpy((LPVOID)(scpbase + offset::MemoryIntegrity2), allow_disintegrity, 9);
+		*(byte*)(scpbase + offset::MemoryIntegrity) = 0xEB;
+		VirtualProtect((void*)(scpbase + offset::MemoryIntegrity), 1, dwOld, NULL);
+		/* /AC bypass */
+
 		// hooking with VEH example
 		AddVectoredExceptionHandler(1, CorruptionHandler);
 		VEH.Append(base + offset::PlayerStats_Update, &PlayerStats_Update);
-		VEH.Append(base + 0x49C5B0, &OnGUI); // PostProcessingBehaviour
+		VEH.Append(base + 0x694DF0, &OnGUI);
 
-		/* NOT NEEDED FOR NOW... (must have with Scopopho)
-		// spoof function so the game calls hack :)
-		auto target = (*(pointer*)(base + 0x01D3DF48) + 0x50); // Console::LateUpdate
-		original = *(pointer*)(target);
-		*(pointer*)(target) = (pointer)(Console_Update);
-		*/
 	}
 	return true;
 }
