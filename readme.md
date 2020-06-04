@@ -22,6 +22,8 @@ v0.6: engine rendering, removed old GUI
 
 v0.7: scopophobia update, AC bypass
 
+v0.8: auto screen resolution change support
+
 # Credits
 
 * [Foxye](https://github.com/EquiFox) for his public hack that gave me inspiration to continue.
