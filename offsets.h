@@ -4,8 +4,8 @@
 namespace offset {
 
 	// il2cpp
-	constexpr pointer il2cpp_string_new = 0x1F8B50;
-	constexpr pointer il2cpp_resolve_icall = 0x1FC680;
+	constexpr pointer il2cpp_string_new = 0x18FA90;
+	constexpr pointer il2cpp_resolve_icall = 0x1935C0;
 	constexpr pointer MemoryIntegrity = 0x70055;
 	constexpr pointer MemoryIntegrity2 = 0x70055 + 0x1B;
 
@@ -28,7 +28,10 @@ namespace offset {
 	constexpr pointer transform_data_vector_structure = 0x1D0;
 
 	// PlayerStats
-	constexpr pointer PlayerStats_Update = 0x2F1780;
+	constexpr pointer PlayerStats_Update = 0x1578230;
 	constexpr pointer PlayerStats_ccm = 0x70;
 	constexpr pointer ccm_team = 0x170;
+
+	// render
+	constexpr pointer GUI = 0x4BCFD0;
 }

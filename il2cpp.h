@@ -28,6 +28,7 @@ typedef GUIContent* t_unity_create_gui_text(Il2CppString*);
 typedef void t_unity_draw_text(Rect position, const char*);
 typedef void t_unity_label(Rect position, GUIContent* content, GUIStyle* style);
 typedef GUIStyle* t_unity_no_style();
+typedef int t_unity_get_screen_data();
 
 namespace il2cpp
 {
@@ -39,6 +40,8 @@ namespace il2cpp
 	constexpr const char* fname_get_transform = "UnityEngine.GameObject::get_transform(System.IntPtr)";
 	constexpr const char* fname_get_current_camera = "UnityEngine.Camera::get_main()";
 	constexpr const char* fname_get_gameobject = "UnityEngine.Component::get_gameObject()";
+	constexpr const char* fname_screen_width = "UnityEngine.Screen::get_width()";
+	constexpr const char* fname_screen_height = "UnityEngine.Screen::get_height()";
 	
 
 	// functions
@@ -47,6 +50,8 @@ namespace il2cpp
 	void Init();
 
 	// usefull functions
+	int get_screen_width();
+	int get_screen_height();
 	pointer get_current_camera();
 	pointer* find_entities(const char* tag);
 	pointer get_gameobject(pointer component);

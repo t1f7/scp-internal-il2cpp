@@ -3,16 +3,13 @@
 #include "memory.h"
 #include "veh.h"
 
-const int Width = 1920;
-const int Height = 1080;
-
 
 void OnGUI(PEXCEPTION_POINTERS ExceptionInfo) {
 
 	// something changes in runtime, let's fix it up
 	il2cpp::Init();
 
-	il2cpp::draw_text(Rect{ 5, 30, 100.0f, 100.0f }, "<color=red>il2cpp plague : v0.7</color>");
+	il2cpp::draw_text(Rect{ 5, 30, 100.0f, 100.0f }, "<color=red>il2cpp plague : v0.8</color>");
 
 	camera = il2cpp::get_current_camera();
 	if (!camera) return;
@@ -24,8 +21,8 @@ void OnGUI(PEXCEPTION_POINTERS ExceptionInfo) {
 		return;
 	}
 
-	auto screenCenterX = Width * 0.5;
-	auto screenCenterY = Height * 0.5;
+	auto screenCenterX = il2cpp::get_screen_width() * 0.5;
+	auto screenCenterY = il2cpp::get_screen_height() * 0.5;
 
 	char buf[100];
 	sprintf(buf, "<color=white>players: %i</color>", entityList.size());
@@ -141,7 +138,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved) {
 		// hooking with VEH example
 		AddVectoredExceptionHandler(1, CorruptionHandler);
 		VEH.Append(base + offset::PlayerStats_Update, &PlayerStats_Update);
-		VEH.Append(base + 0x694DF0, &OnGUI);
+		VEH.Append(base + offset::GUI, &OnGUI);
 
 	}
 	return true;

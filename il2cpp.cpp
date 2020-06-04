@@ -16,6 +16,8 @@ namespace il2cpp
 	void* unity_create_text;
 	void* unity_draw_text;
 	void* unity_none_style;
+	void* unity_get_screen_width;
+	void* unity_get_screen_height;
 
 	pointer GetModuleBase()
 	{
@@ -43,12 +45,22 @@ namespace il2cpp
 		unity_get_transform = ((il2cpp_resolve_icall*)unity_resolve_icall)(fname_get_transform);
 		unity_get_main_camera = ((il2cpp_resolve_icall*)unity_resolve_icall)(fname_get_current_camera);
 		unity_get_gameobject = ((il2cpp_resolve_icall*)unity_resolve_icall)(fname_get_gameobject);
+		unity_get_screen_width = ((il2cpp_resolve_icall*)unity_resolve_icall)(fname_screen_width);
+		unity_get_screen_height = ((il2cpp_resolve_icall*)unity_resolve_icall)(fname_screen_height);
 
 		// unity3D rendering
-		unity_create_text = FindFunction<t_unity_create_gui_text>(0x114FBC0);
-		unity_draw_text = FindFunction<t_unity_label>(0x1164510);
-		unity_none_style = FindFunction<t_unity_no_style>(0x115DD80);
+		unity_create_text = FindFunction<t_unity_create_gui_text>(0xF79070);
+		unity_draw_text = FindFunction<t_unity_label>(0xF8D9D0);
+		unity_none_style = FindFunction<t_unity_no_style>(0xF87240);
 
+	}
+
+	int get_screen_width() {
+		return ((t_unity_get_screen_data*)unity_get_screen_width)();
+	}
+
+	int get_screen_height() {
+		return ((t_unity_get_screen_data*)unity_get_screen_height)();
 	}
 
 	void draw_text(Rect position, const char* text) {
