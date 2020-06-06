@@ -49,9 +49,9 @@ namespace il2cpp
 		unity_get_screen_height = ((il2cpp_resolve_icall*)unity_resolve_icall)(fname_screen_height);
 
 		// unity3D rendering
-		unity_create_text = FindFunction<t_unity_create_gui_text>(0xF79070);
-		unity_draw_text = FindFunction<t_unity_label>(0xF8D9D0);
-		unity_none_style = FindFunction<t_unity_no_style>(0xF87240);
+		unity_create_text = FindFunction<t_unity_create_gui_text>(0x11B0800);
+		unity_draw_text = FindFunction<t_unity_label>(0x11C5150);
+		unity_none_style = FindFunction<t_unity_no_style>(0x11BE9C0);
 
 	}
 
