@@ -6,10 +6,7 @@
 
 void OnGUI(PEXCEPTION_POINTERS ExceptionInfo) {
 
-	// something changes in runtime, let's fix it up
-	il2cpp::Init();
-
-	il2cpp::draw_text(Rect{ 5, 30, 100.0f, 100.0f }, "<color=red>il2cpp plague : v0.8</color>");
+	il2cpp::draw_text(Rect{ 5, 30, 100.0f, 100.0f }, "<color=red>il2cpp plague : v0.9</color>");
 
 	camera = il2cpp::get_current_camera();
 	if (!camera) return;
@@ -49,7 +46,8 @@ void OnGUI(PEXCEPTION_POINTERS ExceptionInfo) {
 	if (objects_num) {
 		auto object = Read<pointer>((pointer)location + offset::unity_list_start);
 
-		vec3 position = il2cpp::get_transform(object, TRANSFORM_IMMOVABLE);
+		vec3 position;
+		il2cpp::get_transform(object, &position);
 		tmp.push_back({
 			object,
 			position,
@@ -86,7 +84,8 @@ void PlayerStats_Update(PEXCEPTION_POINTERS ExceptionInfo) {
 	auto player = il2cpp::get_gameobject(PlayerStats_Component);
 
 	// why don't we collect other data here
-	vec3 position = il2cpp::get_transform(player);
+	vec3 position;
+	il2cpp::get_transform(player, &position);
 
 	// different thread forces us to recreate a list
 	// it looks as a bad design but it works so I don't care actually if it's bad
@@ -122,18 +121,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved) {
 	if (fdwReason == DLL_PROCESS_ATTACH) {
 
 		auto base = il2cpp::GetModuleBase();
-
-		/* AC bypass */
-		DWORD dwOld;
-		auto scpbase = (pointer)GetModuleHandleA("SCPSL.exe");
-		VirtualProtect((void*)(scpbase + offset::MemoryIntegrity), 1, PAGE_EXECUTE_READWRITE, &dwOld);
-		byte allow_disintegrity[] = {
-			0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90
-		};
-		memcpy((LPVOID)(scpbase + offset::MemoryIntegrity2), allow_disintegrity, 9);
-		*(byte*)(scpbase + offset::MemoryIntegrity) = 0xEB;
-		VirtualProtect((void*)(scpbase + offset::MemoryIntegrity), 1, dwOld, NULL);
-		/* /AC bypass */
+		il2cpp::Init();
 
 		// hooking with VEH example
 		AddVectoredExceptionHandler(1, CorruptionHandler);
