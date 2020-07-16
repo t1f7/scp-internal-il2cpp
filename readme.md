@@ -24,6 +24,8 @@ v0.7: scopophobia update, AC bypass
 
 v0.8: auto screen resolution change support
 
+v0.9: better transform handling & more interesting il2cpp class
+
 # Credits
 
 * [Foxye](https://github.com/EquiFox) for his public hack that gave me inspiration to continue.
