@@ -13,13 +13,11 @@ struct VEHUnit {
 	bool post_call = false;
 	void enable()
 	{
-		VirtualProtect((void*)address, 1, PAGE_NOACCESS, NULL);
-		// *(byte*)address = 0xCC;
+		*(byte*)address = 0xCC;
 	}
 	void disable()
 	{
-		VirtualProtect((void*)address, 1, PAGE_EXECUTE, NULL);
-		//*(byte*)address = oldByte;
+		*(byte*)address = oldByte;
 	}
 };
 struct VEHStruct {
@@ -37,8 +35,8 @@ struct VEHStruct {
 		return pl;
 	};
 	void Append(pointer address, void* callback, bool postcall = false) {
-		//DWORD dwOld;
-		//VirtualProtect((void*)address, 1, PAGE_EXECUTE_READWRITE, &dwOld);
+		DWORD dwOld;
+		VirtualProtect((void*)address, 1, PAGE_EXECUTE_READWRITE, &dwOld);
 
 		VEHUnit h = {
 			true,
@@ -61,27 +59,24 @@ LONG WINAPI CorruptionHandler(PEXCEPTION_POINTERS ExceptionInfo) {
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
 	auto code = ExceptionInfo->ExceptionRecord->ExceptionCode;
-	if (code != STATUS_ACCESS_VIOLATION && code != EXCEPTION_SINGLE_STEP)
+	if (code != EXCEPTION_BREAKPOINT && code != EXCEPTION_SINGLE_STEP)
 	{
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
 
 	auto h = VEH.Find((pointer)ExceptionInfo->ContextRecord->Rip);
 	if (h.exists) {
-		if (code == EXCEPTION_SINGLE_STEP) {
-			/*h.disable();
+		if (code == EXCEPTION_BREAKPOINT) {
+			h.disable();
 			ExceptionInfo->ContextRecord->EFlags |= 0x100;
 			if (!h.post_call) ((func*)h.callback)(ExceptionInfo);
-			ExceptionInfo->ContextRecord->Rip = h.address;*/
-			if (!h.post_call) ((func*)h.callback)(ExceptionInfo);
-			h.enable();
+			ExceptionInfo->ContextRecord->Rip = h.address;
 
 			return EXCEPTION_CONTINUE_EXECUTION;
 		}
 		else {
-			ExceptionInfo->ContextRecord->EFlags |= 0x100; 
-			h.disable();
-			//ExceptionInfo->ContextRecord->EFlags &= ~(0x100);
+			h.enable();
+			ExceptionInfo->ContextRecord->EFlags &= ~(0x100);
 			if (h.post_call) ((func*)h.callback)(ExceptionInfo);
 			return EXCEPTION_CONTINUE_EXECUTION;
 		}
