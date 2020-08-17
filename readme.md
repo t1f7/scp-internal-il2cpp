@@ -1,5 +1,9 @@
 The code looks pretty simple and nice.
 
+# how to update offsets
+
+https://github.com/chrysls/scp-internal-il2cpp/wiki
+
 # il2cpp
 
 I have found time to learn megapatch2 changes in SCPSL game.
