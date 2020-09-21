@@ -32,9 +32,9 @@ void OnGUI(PEXCEPTION_POINTERS ExceptionInfo) {
 		if (WorldToScreen(matrix, entityList[i].position, out, screenCenterX, screenCenterY)) {
 
 			float dist = GetDistance(cameraPosition, entityList[i].position);
-			auto color = "white";
+			//auto color = "white";
 
-			sprintf(buf, "<color=%s>%s - %.2f</color>", color, TeamName[entityList[i].team], dist);
+			sprintf(buf, "<color=%s>%s - %.2f</color>", TeamColor[entityList[i].team], TeamName[entityList[i].team], dist);
 			il2cpp::draw_text(Rect{ out.X, out.Y, 100.0f, 100.0f }, buf);
 		}
 	}

@@ -21,7 +21,7 @@ namespace offset {
 	// PlayerStats
 	constexpr pointer PlayerStats_Update = 0x15D5900;
 	constexpr pointer PlayerStats_ccm = 0x70;
-	constexpr pointer ccm_team = 0x178;
+	constexpr pointer ccm_team = 0x158;
 
 	// render
 	constexpr pointer GUI = 0x3A3330;
