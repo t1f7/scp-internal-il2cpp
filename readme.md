@@ -4,6 +4,10 @@ The code looks pretty simple and nice.
 
 https://github.com/chrysls/scp-internal-il2cpp/wiki
 
+# friendly reminder
+
+SPC:SL added VAC support and public software is detected. You will probably get banned by VAC for using the repo as is.
+
 # il2cpp
 
 I have found time to learn megapatch2 changes in SCPSL game.
