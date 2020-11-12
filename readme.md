@@ -6,7 +6,7 @@ https://github.com/chrysls/scp-internal-il2cpp/wiki
 
 # friendly reminder
 
-SPC:SL added VAC support and public software is detected. You will probably get banned by VAC for using the repo as is.
+SPC:SL added VAC support and public software is detected. You will probably get banned by VAC for using the repo as is. And for using public injectors.
 
 # il2cpp
 
