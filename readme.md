@@ -2,7 +2,7 @@ The code looks pretty simple and nice.
 
 # how to update offsets
 
-https://github.com/chrysls/scp-internal-il2cpp/wiki
+https://github.com/t1f7/scp-internal-il2cpp/wiki
 
 # friendly reminder
 
