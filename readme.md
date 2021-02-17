@@ -6,7 +6,7 @@ https://github.com/t1f7/scp-internal-il2cpp/wiki
 
 # friendly reminder
 
-SPC:SL added VAC support and public software is detected. You will probably get banned by VAC for using the repo as is. And for using public injectors.
+Game detects CreateRemoteThread and client-side AC hooked multiple functions like LoadLibraryA.
 
 # il2cpp
 
