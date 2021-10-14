@@ -6,7 +6,22 @@ https://github.com/t1f7/scp-internal-il2cpp/wiki
 
 # friendly reminder
 
-Game detects CreateRemoteThread and client-side AC hooked multiple functions like LoadLibraryA.
+SL-AC.dll hooks next functions to detect this base
+
+```
+GetProcAddress
+LoadLibraryA
+LoadLibraryW
+GetModuleHandleA
+GetModuleHandleW
+GetAsyncKeyState
+NtOpenFile
+CreateThread
+Sleep
+il2cpp_string_new
+il2cpp_resolve_icall
+UnityPlayer.dll + 0x937480 (gettable with il2cpp_resolve_icall("UnityEngine.GameObject::FindGameObjectsWithTag(System.String)")), in other words "il2cpp::unity_find_objects" is detected also.
+```
 
 # il2cpp
 
